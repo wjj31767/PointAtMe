@@ -1,21 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
+using System.IO;
+using UnityEngine.UI;
 
 public class LabelToolManager : MonoBehaviour
 {
     // path to data
     //static string path: it needs to lead to the folder of the unity project (i.e. the folder "Assets" is within this folder)
 
-    static string path = "C:/Users/wirth/Documents/VR_devel/label_tool_ws/"; 
-    //static string path = @"U:\VR_dev\VR_test_aktuell_BUGFIX/";
+    static string path = Directory.GetCurrentDirectory();
 
     // path to raw data
-    public static string PathToData = path + "Assets/RecordedData_KITTI";
+    public static string PathToData = Path.Combine(new string[] { path, "Assets/RecordedData_KITTI" });
     // path to labels
-    public static string PathToLabels = path + "Assets/Labels";
+    public static string PathToLabels = Path.Combine(new string[] { path, "Assets/Labels" });
     // path to pcd meshes
-    public static string PathToPCLMeshes = path + "Assets/Resources/PointCloudMeshes";
+    public static string PathToPCLMeshes = Path.Combine(new string[]{ path, "Assets/Resources/PointCloudMeshes"});
     // array of pcd files in pcd folder
     public static List<string> fileNamesPCD = new List<string>();
     // array of images in image folders
@@ -97,28 +99,28 @@ public class LabelToolManager : MonoBehaviour
 
         foreach (string subfolder in subfolders)
         {
-            if (System.IO.Directory.Exists(LabelToolManager.PathToData + "/" + subfolder))
+            if (System.IO.Directory.Exists(PathToData + "/" + subfolder))
             {
                 if (subfolder == "pcd")
                 {
-                    fileNamesPCD = System.IO.Directory.GetFiles(LabelToolManager.PathToData + "/" + subfolder + "/", "*.pcd").ToList();
+                    fileNamesPCD = System.IO.Directory.GetFiles(PathToData + "/" + subfolder + "/", "*.pcd").ToList();
                     if (fileNamesPCD.Count > 0)
                         fileNamesPCD = ReadNames(fileNamesPCD);
                     else
-                        Debug.LogError("No .pcd files found in directory: " + LabelToolManager.PathToData + "/" + subfolder + "/");
+                        Debug.LogError("No .pcd files found in directory: " + PathToData + "/" + subfolder + "/");
                 }
                 else
                 {
-                    fileNamesImg = System.IO.Directory.GetFiles(LabelToolManager.PathToData + "/" + subfolder + "/", "*.png").ToList();
+                    fileNamesImg = System.IO.Directory.GetFiles(PathToData + "/" + subfolder + "/", "*.png").ToList();
                     if (fileNamesImg.Count > 0)
                         fileNamesImg = ReadNames(fileNamesImg);
                     else
-                        Debug.LogError("No .png files found in directory: " + LabelToolManager.PathToData + "/" + subfolder + "/");
+                        Debug.LogError("No .png files found in directory: " + PathToData + "/" + subfolder + "/");
                 }
             }
             else
             {
-                Debug.Log("Directory: " + LabelToolManager.PathToData + "/" + subfolder + "/" + " does not exist");
+                Debug.Log("Directory: " + PathToData + "/" + subfolder + "/" + " does not exist");
             }
         }
 

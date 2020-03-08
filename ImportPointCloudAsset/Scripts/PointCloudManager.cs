@@ -62,15 +62,17 @@ public class PointCloudManager : MonoBehaviour
     float sensor_dist = 5.0f;
     // is intensity available? Sometimes there are only zeros in the pcd files...
     bool intensity_exists = false;
+
+    public static string PathToPCD = Path.Combine(new string[] { LabelToolManager.PathToData, "pcd" });
     void Start()
     {
         // Create Resources folder
         createFolders();
 
         // Get all .pcd files that are part of a sequence
-        if (System.IO.Directory.Exists(LabelToolManager.PathToData + "/pcd"))
+        if (System.IO.Directory.Exists(PathToPCD))
         {
-            fileNames = System.IO.Directory.GetFiles(LabelToolManager.PathToData + "/pcd", "*.pcd").ToList();
+            fileNames = System.IO.Directory.GetFiles(PathToPCD, "*.pcd").ToList();
             if (fileNames.Count > 0)
             {
                 int i = 0;
@@ -90,12 +92,12 @@ public class PointCloudManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("No .pcd files found in directory: " + LabelToolManager.PathToData + "/pcd");
+                Debug.LogError("No .pcd files found in directory: " + PathToPCD);
             }
         }
         else
         {
-            Debug.LogError("Directory: " + LabelToolManager.PathToData + "/pcd" + " does not exist");
+            Debug.LogError("Directory: " + PathToPCD + " does not exist");
         }
         scale = LabelToolManager.scaleFactors[LabelToolManager.current_scale_idx];
 
